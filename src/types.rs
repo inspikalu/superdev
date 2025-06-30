@@ -60,8 +60,8 @@ pub struct SignMessageRequest {
 
 #[derive(Serialize)]
 pub struct SignMessageData {
-    pub signature: String, // base64-encoded signature
-    pub public_key: String, // base58-encoded public key
+    pub signature: String, 
+    pub public_key: String,
     pub message: String,
 }
 

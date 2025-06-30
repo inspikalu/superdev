@@ -10,7 +10,6 @@ use serde_json;
 pub async fn sign_message(
     req: web::Json<SignMessageRequest>,
 ) -> impl Responder {
-    // Validate fields
     if req.message.is_empty() || req.secret.is_empty() {
         return HttpResponse::BadRequest().json(serde_json::json!({
             "success": false,
@@ -18,7 +17,6 @@ pub async fn sign_message(
         }));
     }
 
-    // Decode secret key from base58
     let secret_bytes = match bs58::decode(&req.secret).into_vec() {
         Ok(bytes) => bytes,
         Err(_) => {
@@ -38,7 +36,6 @@ pub async fn sign_message(
         }
     };
 
-    // Sign the message
     let signature = keypair.sign_message(req.message.as_bytes());
     let signature_b64 = base64::encode(signature.as_ref());
     let public_key_b58 = keypair.pubkey().to_string();

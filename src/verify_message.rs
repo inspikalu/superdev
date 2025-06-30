@@ -9,7 +9,6 @@ use solana_sdk::signature::Signature;
 pub async fn verify_message(
     req: web::Json<VerifyMessageRequest>,
 ) -> impl Responder {
-    // Validate fields
     if req.message.is_empty() || req.signature.is_empty() || req.pubkey.is_empty() {
         return HttpResponse::BadRequest().json(serde_json::json!({
             "success": false,
@@ -17,7 +16,6 @@ pub async fn verify_message(
         }));
     }
 
-    // Decode signature from base64
     let signature_bytes = match base64::decode(&req.signature) {
         Ok(bytes) => bytes,
         Err(_) => {
@@ -37,7 +35,6 @@ pub async fn verify_message(
         }
     };
 
-    // Decode public key from base58
     let pubkey = match bs58::decode(&req.pubkey).into_vec() {
         Ok(bytes) => match Pubkey::try_from(bytes.as_slice()) {
             Ok(pk) => pk,
@@ -56,7 +53,6 @@ pub async fn verify_message(
         }
     };
 
-    // Verify the signature
     let valid = signature.verify(pubkey.as_ref(), req.message.as_bytes());
 
     let data = VerifyMessageData {

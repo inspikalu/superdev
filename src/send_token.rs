@@ -9,7 +9,6 @@ use base64;
 pub async fn send_token(
     req: web::Json<SendTokenRequest>,
 ) -> impl Responder {
-    // Validate input
     if req.destination.is_empty() || req.mint.is_empty() || req.owner.is_empty() || req.amount == 0 {
         return HttpResponse::Ok().json(serde_json::json!({
             "success": false,

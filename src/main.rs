@@ -25,13 +25,12 @@ pub use send_token::*;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Load environment variables
     let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
     let rpc_url = env::var("SOLANA_RPC_URL").unwrap_or_else(|_| {
         "https://api.devnet.solana.com".to_string()
     });
 
-    // Initialize RpcClient
+    
     let rpc_client = Arc::new(RpcClient::new(rpc_url.clone()));
     let state = web::Data::new(AppState { rpc_client });
 

@@ -9,7 +9,6 @@ use serde_json;
 pub async fn send_sol(
     req: web::Json<SendSolRequest>,
 ) -> impl Responder {
-    // Validate input
     if req.from.is_empty() || req.to.is_empty() || req.lamports == 0 {
         return HttpResponse::Ok().json(serde_json::json!({
             "success": false,
